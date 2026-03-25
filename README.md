@@ -34,4 +34,4 @@ sql-for-data-engineering/
 Self-study repository by Muhammad Taha Munir — CS graduate actively
 building skills in Data Engineering.
 
-[GitHub](https://github.com/MuhammadTahadev) • [LinkedIn](https://www.linkedin.com/in/taha-munirrr/)
+[GitHub](https://github.com/muhammad-taha-munir) • [LinkedIn](https://www.linkedin.com/in/taha-munirrr/)
