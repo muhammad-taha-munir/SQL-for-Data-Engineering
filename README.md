@@ -9,14 +9,14 @@ covering core to advanced concepts for Data Engineering.
 - **Client:** SQL Server Management Studio (SSMS)
 
 ## Topics Covered
-- [ ] Basics — SELECT, WHERE, ORDER BY, DISTINCT
-- [ ] Filtering & Operators — AND/OR, IN, BETWEEN, LIKE, NULL handling
-- [ ] Joins — INNER, LEFT, RIGHT, FULL OUTER, SELF JOIN
-- [ ] Aggregations — GROUP BY, HAVING, COUNT, SUM, AVG, MIN, MAX
-- [ ] Subqueries & Nested Queries
-- [ ] CTEs (Common Table Expressions)
-- [ ] Window Functions — RANK, ROW_NUMBER, DENSE_RANK, LAG, LEAD
-- [ ] Stored Procedures & Functions
+- [ ] Basic Queries — SELECT, WHERE, ORDER BY, LIMIT, GROUP BY, HAVING
+- [ ] Filtering & Conditions — AND, OR, IN, BETWEEN, LIKE
+- [ ] Data Transformations & Cleaning — String, Number, Date, NULL Functions
+- [ ] Case Statements — CASE WHEN
+- [ ] Aggregations — COUNT, SUM, AVG, MIN, MAX
+- [ ] Joins — INNER, LEFT, RIGHT, FULL OUTER
+- [ ] Window Functions — ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD
+- [ ] Clean & Readable SQL — CTEs, Subqueries, Views, CTAS, Temp Tables
 - [ ] Indexes & Query Optimization
 - [ ] Data Engineering Concepts — ETL queries, data cleaning, transformations
 
