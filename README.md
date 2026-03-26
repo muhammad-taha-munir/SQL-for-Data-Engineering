@@ -27,6 +27,7 @@ sql-for-data-engineering/
 ├── intermediate/
 ├── advanced/
 ├── projects/
+├── databases/
 └── README.md
 ```
 
