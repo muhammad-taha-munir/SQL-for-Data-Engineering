@@ -1,4 +1,4 @@
---Retrive customer's with score not equal to 0.
+--Retrieve customer's with score not equal to 0.
 
 SELECT *
 FROM customers
