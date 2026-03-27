@@ -613,3 +613,78 @@ ORDER BY column DESC/ASC;
 | Top n lowest values   | ASC         |
 | Most recent records   | DESC (date) |
 | Oldest records        | ASC (date)  |
+
+---
+
+## Coding Order vs Execution Order
+
+These are two different things in SQL that beginners often confuse.
+**Coding Order** is how you write the query.
+**Execution Order** is how SQL actually runs it internally.
+
+> For a visual representation of this concept refer to
+> `Coding order vs Execution Order.png` in the `basics/` folder.
+
+---
+
+### Coding Order — How You Write It
+
+This is the order you must follow when typing a query:
+```sql
+SELECT DISTINCT TOP 2
+    col1,
+    SUM(col2)
+FROM table
+WHERE col = 10
+GROUP BY col1
+HAVING SUM(col2) > 30
+ORDER BY col1 ASC;
+```
+
+| Step | Clause        |
+|------|---------------|
+| 1    | SELECT        |
+| 2    | FROM          |
+| 3    | WHERE         |
+| 4    | GROUP BY      |
+| 5    | HAVING        |
+| 6    | ORDER BY      |
+| 7    | TOP           |
+
+---
+
+### Execution Order — How SQL Runs It
+
+Even though you write `SELECT` first, SQL does not start there.
+Internally it runs in this order:
+
+| Step | Clause          | What it does                              |
+|------|-----------------|-------------------------------------------|
+| 1    | FROM            | Gets the table from the database          |
+| 2    | WHERE           | Filters individual rows                   |
+| 3    | GROUP BY        | Groups the remaining rows                 |
+| 4    | HAVING          | Filters the groups                        |
+| 5    | SELECT DISTINCT | Selects columns and removes duplicates    |
+| 6    | ORDER BY        | Sorts the result                          |
+| 7    | TOP             | Limits the number of rows returned        |
+
+---
+
+### Why This Matters
+
+Understanding execution order explains several common confusions:
+
+- **Why you can't use a SELECT alias in WHERE** — `WHERE` runs before
+  `SELECT` so the alias doesn't exist yet at that point
+- **Why HAVING comes after GROUP BY** — it needs the groups to already
+  exist before it can filter them
+- **Why TOP comes last** — SQL sorts and filters everything first, then
+  cuts the result down to the number you specified
+
+---
+
+### Key Takeaway
+
+You write SQL in **Coding Order** but SQL executes it in **Execution Order**.
+These two are completely different sequences. Knowing execution order helps
+you write correct queries and understand why certain things work or fail.
