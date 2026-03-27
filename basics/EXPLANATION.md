@@ -515,3 +515,101 @@ repetition in your data. If a column is already unique, skip it.
 - It applies to the entire row, not just one column
 - It can slow down queries on large datasets because SQL has to compare every value
 - Only use it when duplication is confirmed — not as a default habit
+
+---
+
+## Limiting Results with TOP
+
+`TOP` restricts the number of rows returned by a query.
+In Microsoft SQL Server this is `TOP` — other databases like MySQL use `LIMIT`
+for the same purpose.
+
+---
+
+### Basic Usage
+**File:** `top_limit_basics.sql`
+```sql
+SELECT TOP 3 *
+FROM customers;
+```
+
+**Result:** Returns the first 3 rows from the customers table as they are
+stored — no particular order unless you specify `ORDER BY`.
+
+---
+
+### Retrieve Top 3 Customers with Highest Score
+**File:** `top_limit_tasks.sql`
+```sql
+SELECT TOP 3 *
+FROM customers
+ORDER BY score DESC;
+```
+
+**Result:**
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 2  | John       | USA     | 900   |
+| 3  | Georg      | UK      | 750   |
+| 4  | Martin     | Germany | 500   |
+
+`ORDER BY score DESC` sorts highest first, then `TOP 3` takes only the
+first 3 rows from that sorted result.
+
+---
+
+### Retrieve Bottom 2 Customers with Lowest Score
+**File:** `top_limit_tasks.sql`
+```sql
+SELECT TOP 2 *
+FROM customers
+ORDER BY score ASC;
+```
+
+**Result:**
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 5  | Peter      | USA     | 0     |
+| 1  | Maria      | Germany | 350   |
+
+`ORDER BY score ASC` sorts lowest first, then `TOP 2` takes only the
+first 2 rows. This is how you get the bottom performers.
+
+---
+
+### Get the Two Most Recent Orders
+**File:** `top_limit_tasks.sql`
+```sql
+SELECT TOP 2 *
+FROM orders
+ORDER BY order_date DESC;
+```
+
+**Result:**
+| order_id | customer_id | order_date | sales |
+|----------|-------------|------------|-------|
+| 1004     | 6           | 2021-08-31 | 10    |
+| 1003     | 3           | 2021-06-18 | 20    |
+
+`ORDER BY order_date DESC` sorts the most recent date first, then `TOP 2`
+returns only the two latest orders.
+
+---
+
+### Key Takeaway
+
+`TOP` without `ORDER BY` returns rows in no guaranteed order — the result
+depends on how SQL Server stored the data internally. Always pair `TOP`
+with `ORDER BY` to get meaningful results.
+```sql
+SELECT TOP n *
+FROM table
+ORDER BY column DESC/ASC;
+```
+
+| Goal                  | Order       |
+|-----------------------|-------------|
+| Top n highest values  | DESC        |
+| Top n lowest values   | ASC         |
+| Most recent records   | DESC (date) |
+| Oldest records        | ASC (date)  |
