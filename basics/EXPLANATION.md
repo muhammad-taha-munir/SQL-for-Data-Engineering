@@ -305,3 +305,161 @@ ORDER BY column ASC/DESC;
 
 Any column in `SELECT` that is **not** inside an aggregation function
 **must** appear in `GROUP BY`. Otherwise SQL will throw an error.
+
+---
+
+## Filtering Groups with HAVING
+
+`HAVING` is used to filter **groups** after aggregation.
+It works like `WHERE` but for aggregated results — you cannot use `WHERE`
+to filter the result of `SUM()`, `COUNT()`, `AVG()` etc. That is what
+`HAVING` is for.
+
+---
+
+### The Execution Order with HAVING
+
+SQL executes clauses in this order:
+```
+1. FROM      → get the table
+2. WHERE     → filter individual rows (before grouping)
+3. GROUP BY  → group the remaining rows
+4. HAVING    → filter the groups (after aggregation)
+5. SELECT    → return the final result
+```
+
+This order is critical to understand — `WHERE` filters rows before
+grouping, `HAVING` filters groups after aggregation.
+
+---
+
+### Filter Countries by Total Score
+**File:** `having_clause.sql`
+```sql
+SELECT
+    country,
+    SUM(score) AS score_greater_than_800
+FROM customers
+GROUP BY country
+HAVING SUM(score) > 800;
+```
+
+**Result:**
+| country | score_greater_than_800 |
+|---------|------------------------|
+| Germany | 850                    |
+| USA     | 900                    |
+
+UK is excluded because its total score (750) does not meet the condition.
+`HAVING SUM(score) > 800` runs after grouping and filters out any group
+whose total score is 800 or below.
+
+---
+
+### Using WHERE and HAVING Together
+**File:** `having_clause.sql`
+
+You can filter twice — once before grouping with `WHERE` and once after
+grouping with `HAVING`:
+```sql
+SELECT
+    country,
+    SUM(score)
+FROM customers
+WHERE score > 400
+GROUP BY country
+HAVING SUM(score) > 800;
+```
+
+Here is what happens step by step using our reference table:
+
+**Step 1 — WHERE filters individual rows first:**
+
+Only rows where `score > 400` pass through:
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 2  | John       | USA     | 900   |
+| 3  | Georg      | UK      | 750   |
+| 4  | Martin     | Germany | 500   |
+
+Maria (350) and Peter (0) are excluded before any grouping happens.
+
+**Step 2 — GROUP BY groups the remaining rows:**
+```
+Germany → Martin (500)
+UK      → Georg (750)
+USA     → John (900)
+```
+
+**Step 3 — HAVING filters the groups:**
+
+Only groups with `SUM(score) > 800` pass through:
+| country | SUM(score) |
+|---------|------------|
+| USA     | 900        |
+
+Germany (500) and UK (750) are excluded because neither meets the HAVING condition.
+
+---
+
+### Task — Average Score by Country
+**File:** `having_task.sql`
+
+Find the average score for each country considering only customers
+with a score not equal to 0, and only show countries where the
+average is above 430:
+```sql
+SELECT
+    country,
+    AVG(score) AS avg_score
+FROM customers
+WHERE score != 0
+GROUP BY country
+HAVING AVG(score) > 430;
+```
+
+**Step 1 — WHERE removes customers with score = 0:**
+
+Peter (0) is excluded. Remaining rows:
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 1  | Maria      | Germany | 350   |
+| 2  | John       | USA     | 900   |
+| 3  | Georg      | UK      | 750   |
+| 4  | Martin     | Germany | 500   |
+
+**Step 2 — GROUP BY groups by country:**
+```
+Germany → Maria (350), Martin (500) → AVG = 425
+UK      → Georg (750)               → AVG = 750
+USA     → John (900)                → AVG = 900
+```
+
+**Step 3 — HAVING filters groups where AVG > 430:**
+| country | avg_score |
+|---------|-----------|
+| UK      | 750       |
+| USA     | 900       |
+
+Germany is excluded because its average (425) does not exceed 430.
+
+---
+
+### Key Takeaway
+
+| Clause  | Filters        | Runs At         |
+|---------|----------------|-----------------|
+| WHERE   | Individual rows | Before grouping |
+| HAVING  | Groups          | After grouping  |
+
+Use `WHERE` to filter raw data and `HAVING` to filter aggregated results.
+You can use both in the same query — `WHERE` always comes before `GROUP BY`
+and `HAVING` always comes after.
+```sql
+SELECT   columns, AGG_FUNCTION(column) AS alias
+FROM     table
+WHERE    row_condition
+GROUP BY column
+HAVING   group_condition
+ORDER BY column ASC/DESC;
+```
