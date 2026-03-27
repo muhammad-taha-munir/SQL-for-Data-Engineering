@@ -688,3 +688,70 @@ Understanding execution order explains several common confusions:
 You write SQL in **Coding Order** but SQL executes it in **Execution Order**.
 These two are completely different sequences. Knowing execution order helps
 you write correct queries and understand why certain things work or fail.
+
+---
+
+## Selecting Static Values
+
+In SQL you can select values that don't come from any table — these are
+called static or literal values. They are hardcoded directly in the query.
+
+---
+
+### Select a Static Number
+**File:** `select_static_values.sql`
+```sql
+SELECT 123 AS static_number;
+```
+
+**Result:**
+| static_number |
+|---------------|
+| 123           |
+
+This returns a single row with the value 123. No table is involved —
+the value comes entirely from the query itself.
+
+---
+
+### Add a Static Column to a Table Query
+**File:** `select_static_values.sql`
+```sql
+SELECT
+    id,
+    first_name,
+    'New Customer' AS customer_type
+FROM customers;
+```
+
+**Result:**
+| id | first_name | customer_type |
+|----|------------|---------------|
+| 1  | Maria      | New Customer  |
+| 2  | John       | New Customer  |
+| 3  | Georg      | New Customer  |
+| 4  | Martin     | New Customer  |
+| 5  | Peter      | New Customer  |
+
+`'New Customer'` is a static text value — it is not a column in the
+database. SQL repeats the same value for every row in the result.
+The `customer_type` column exists only in the query output and makes
+no changes to the actual database.
+
+---
+
+### When Is This Useful
+
+Static values are commonly used in Data Engineering for:
+- **Tagging rows** — labeling data with a category or status during transformation
+- **Adding constants** — inserting a fixed value like a batch ID or source name
+- **Testing queries** — quickly checking how a new column would look before adding it to the database
+
+---
+
+### Key Takeaway
+
+- Static values can be numbers, text, or dates
+- Text static values are always wrapped in single quotes `' '`
+- Always use `AS` to give the static column a meaningful name
+- The column exists only in the query output — nothing in the database is changed
