@@ -3,6 +3,10 @@
 This file documents every query written in the `basics/` folder with
 detailed explanations. Use this as a personal reference and revision guide.
 
+> **Database Used:** All queries in this folder are based on the practice database
+> located in `databases/Basic Database/`. Set it up first before running any queries.
+> Refer to `GUIDE.md` for setup instructions.
+
 ### Reference Tables
 
 **customers**
