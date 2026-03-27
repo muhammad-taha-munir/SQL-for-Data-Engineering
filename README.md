@@ -9,7 +9,7 @@ covering core to advanced concepts for Data Engineering.
 - **Client:** SQL Server Management Studio (SSMS)
 
 ## Topics Covered
-- [ ] Basic Queries — SELECT, WHERE, ORDER BY, LIMIT, GROUP BY, HAVING
+- [x] Basic Queries — SELECT, WHERE, ORDER BY, TOP (LIMIT), GROUP BY, HAVING
 - [ ] Filtering & Conditions — AND, OR, IN, BETWEEN, LIKE
 - [ ] Data Transformations & Cleaning — String, Number, Date, NULL Functions
 - [ ] Case Statements — CASE WHEN
