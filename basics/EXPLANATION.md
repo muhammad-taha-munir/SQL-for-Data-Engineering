@@ -463,3 +463,55 @@ GROUP BY column
 HAVING   group_condition
 ORDER BY column ASC/DESC;
 ```
+
+---
+
+## Removing Duplicates with DISTINCT
+
+`DISTINCT` returns only unique values from a column, removing any repetition
+from the result set.
+
+---
+
+### Return Unique List of Countries
+**File:** `distinct_unique_values.sql`
+```sql
+SELECT DISTINCT
+    country
+FROM customers;
+```
+
+**Result:**
+| country |
+|---------|
+| Germany |
+| USA     |
+| UK      |
+
+Without `DISTINCT` the query would return 5 rows — Germany appearing twice
+and USA appearing twice because Maria, Martin share Germany and John, Peter
+share USA. `DISTINCT` collapses those into one row per unique value.
+
+---
+
+### Bad Habit — Using DISTINCT Unnecessarily
+```sql
+SELECT DISTINCT id
+FROM customers;
+```
+
+`id` is already unique by nature — every customer has a different id.
+Using `DISTINCT` here wastes resources because SQL still has to scan and
+compare every value even when there is nothing to deduplicate.
+
+**Rule:** Only use `DISTINCT` when you can actually see duplication or
+repetition in your data. If a column is already unique, skip it.
+
+---
+
+### Key Takeaway
+
+- `DISTINCT` is placed right after `SELECT`
+- It applies to the entire row, not just one column
+- It can slow down queries on large datasets because SQL has to compare every value
+- Only use it when duplication is confirmed — not as a default habit
