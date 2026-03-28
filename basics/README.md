@@ -8,12 +8,15 @@ using Microsoft SQL Server (T-SQL) as part of the Data Engineering learning road
 ## Folder Structure
 ```
 basics/
-├── query-data/         ← SELECT, WHERE, ORDER BY, TOP, DISTINCT, GROUP BY, HAVING
-├── DDL/                ← Data Definition Language (CREATE, ALTER, DROP)
-├── DML/                ← Data Manipulation Language (INSERT, UPDATE, DELETE)
-├── practice-test/      ← Practice questions, solutions and explanations
-├── GUIDE.md            ← How to set up the practice database
-└── README.md           ← You are here
+├── query-data/             ← SELECT, WHERE, ORDER BY, TOP, DISTINCT, GROUP BY, HAVING
+│   └── EXPLANATION.md      ← Explains all query-data scripts
+├── DDL/                    ← Data Definition Language (CREATE, ALTER, DROP)
+│   └── EXPLANATION.md      ← Explains all DDL scripts
+├── DML/                    ← Data Manipulation Language (INSERT, UPDATE, DELETE)
+│   └── EXPLANATION.md      ← Explains all DML scripts
+├── practice-test/          ← Practice questions, solutions and explanations
+├── GUIDE.md                ← How to set up the practice database
+└── README.md               ← You are here
 ```
 
 ---
@@ -54,7 +57,8 @@ Refer to `GUIDE.md` for setup instructions before running any queries.
 ## How to Use
 
 1. Set up the database by following `GUIDE.md`
-2. Open any `.sql` file in SSMS
-3. Make sure `MyDatabase` is selected
-4. Execute the query and observe the results
-5. Read `EXPLANATION.md` for a detailed breakdown of each query
+2. Navigate to the relevant subfolder
+3. Open any `.sql` file in SSMS
+4. Make sure `MyDatabase` is selected
+5. Execute the query and observe the results
+6. Read the `EXPLANATION.md` inside that subfolder for a detailed breakdown
