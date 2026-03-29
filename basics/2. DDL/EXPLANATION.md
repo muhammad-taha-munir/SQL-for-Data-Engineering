@@ -82,3 +82,53 @@ CREATE TABLE table_name (
 - Always define a **Primary Key** — it uniquely identifies each row
 - Use `NOT NULL` for fields that are required and `NULL` for optional fields
 
+---
+
+## ALTER
+
+The `ALTER` command is used to modify the structure of an existing table.
+This includes adding new columns, changing data types, or removing columns.
+
+---
+
+### Add a New Column
+**File:** `alter_table.sql`
+```sql
+ALTER TABLE persons
+ADD email VARCHAR(50) NOT NULL;
+```
+
+This adds a new `email` column to the `persons` table.
+
+> **Important:** New columns are always appended at the end of the table.
+> If you need a column at the beginning or middle of the table and it already
+> contains data, you will have to drop the entire table and recreate it with
+> the column in the correct position.
+
+---
+
+### Remove a Column
+**File:** `alter_table.sql`
+```sql
+ALTER TABLE persons
+DROP COLUMN phone;
+```
+
+This permanently removes the `phone` column from the `persons` table.
+
+> **Warning:** Dropping a column deletes all data stored in that column
+> permanently. There is no undo. Always make sure you no longer need the
+> data before dropping a column.
+
+---
+
+### Key Takeaway
+
+| Operation | Syntax |
+|-----------|--------|
+| Add a column | `ALTER TABLE table_name ADD column_name DATA_TYPE CONSTRAINT` |
+| Remove a column | `ALTER TABLE table_name DROP COLUMN column_name` |
+
+- `ALTER` changes the structure of an existing table
+- Adding a column always places it at the end of the table
+- Dropping a column is permanent — all data in that column is lost
