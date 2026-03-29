@@ -284,3 +284,106 @@ WHERE condition;
 ```
 
 Always `SELECT` before you `UPDATE` to confirm the right rows are targeted.
+
+---
+
+## DELETE
+
+The `DELETE` command removes existing rows from a table.
+
+**Syntax:**
+```sql
+DELETE FROM table_name
+WHERE condition;
+```
+
+> **Critical Rule:** Always use `WHERE` with `DELETE`. Without it every
+> single row in the table will be deleted — the table structure remains
+> but all data inside it is gone.
+
+---
+
+### Delete Specific Rows
+**File:** `delete_data.sql`
+
+**Task:** Delete all customers with a score less than 250.
+```sql
+DELETE FROM customers
+WHERE score < 250;
+```
+
+**Before:**
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 1  | Maria      | Japan   | 350   |
+| 2  | John       | Japan   | 0     |
+| 3  | Georg      | Japan   | 250   |
+| 4  | Martin     | Japan   | 500   |
+| 5  | Peter      | Japan   | 0     |
+
+**After:**
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 1  | Maria      | Japan   | 350   |
+| 3  | Georg      | Japan   | 250   |
+| 4  | Martin     | Japan   | 500   |
+
+John (0) and Peter (0) are deleted because their scores are less than 250.
+Georg (250) is kept because `< 250` means strictly less than, not equal to.
+
+---
+
+### Delete All Rows from a Table
+**File:** `delete_data.sql`
+```sql
+DELETE FROM persons;
+```
+
+This deletes every row from the `persons` table. The table itself still
+exists with its structure and columns intact — only the data is removed.
+
+---
+
+### TRUNCATE — A Faster Alternative
+**File:** `delete_data.sql`
+```sql
+TRUNCATE TABLE persons;
+```
+
+`TRUNCATE` does the same job as `DELETE FROM persons` — it removes all
+rows from the table. However there is an important difference:
+
+| | DELETE | TRUNCATE |
+|-|--------|----------|
+| Removes all rows | ✅ | ✅ |
+| Can use WHERE | ✅ | ❌ |
+| Logs each row deletion | ✅ | ❌ |
+| Speed on large data | Slower | Faster |
+| Can be rolled back | ✅ | ❌ (in most cases) |
+
+`DELETE` logs every single row it removes which makes it slower on large
+tables. `TRUNCATE` skips the row-by-row logging and removes all data at
+once — making it significantly faster when you want to clear an entire table.
+
+> **Rule of thumb:** Use `DELETE` when you need to remove specific rows
+> using `WHERE`. Use `TRUNCATE` when you want to clear an entire table quickly.
+
+---
+
+### Key Takeaway
+```sql
+-- Delete specific rows
+DELETE FROM table_name
+WHERE condition;
+
+-- Delete all rows (logged, slower)
+DELETE FROM table_name;
+
+-- Delete all rows (not logged, faster)
+TRUNCATE TABLE table_name;
+```
+
+- `DELETE` without `WHERE` removes all rows — always double check
+- `TRUNCATE` cannot be used with a `WHERE` condition
+- Both `DELETE` and `TRUNCATE` keep the table structure intact
+- `DROP TABLE` removes both the structure and the data entirely
