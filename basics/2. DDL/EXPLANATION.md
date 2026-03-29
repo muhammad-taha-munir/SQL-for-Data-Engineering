@@ -132,3 +132,40 @@ This permanently removes the `phone` column from the `persons` table.
 - `ALTER` changes the structure of an existing table
 - Adding a column always places it at the end of the table
 - Dropping a column is permanent — all data in that column is lost
+
+---
+
+## DROP
+
+The `DROP` command is used to completely remove a table from the database.
+This deletes both the table structure and all the data inside it permanently.
+
+---
+
+### Remove a Table
+**File:** `drop_table.sql`
+
+**Task:** Remove the table `persons` from the database.
+```sql
+DROP TABLE persons;
+```
+
+This removes the `persons` table entirely from `MyDatabase`. After running
+this command the table no longer exists — you cannot query it or recover it.
+
+> **Warning:** `DROP TABLE` is one of the most destructive commands in SQL.
+> It deletes everything — the structure, the columns, and all the data inside.
+> There is no undo. Always double check before running this command.
+
+---
+
+### Key Takeaway
+
+| Command | What it deletes |
+|---------|-----------------|
+| `DROP COLUMN` | A single column and its data |
+| `DROP TABLE` | The entire table, all columns and all data |
+
+- `DROP` is permanent — there is no undo or recycle bin
+- Always confirm you are connected to the correct database before dropping
+- In a real work environment dropping a table is rarely done without a backup
