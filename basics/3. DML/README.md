@@ -145,3 +145,142 @@ SELECT col1, col2
 FROM source_table
 WHERE condition;
 ```
+
+---
+
+## UPDATE
+
+The `UPDATE` command modifies existing rows in a table.
+
+**Syntax:**
+```sql
+UPDATE table_name
+    SET col1 = val1,
+        col2 = val2
+WHERE condition;
+```
+
+> **Critical Rule:** Always use `WHERE` with `UPDATE`. Without it every
+> single row in the table will be updated — this is one of the most
+> common and destructive mistakes in SQL.
+
+---
+
+### Best Practice Before Updating
+**File:** `update_data.sql`
+
+Before running any `UPDATE`, first run a `SELECT` with the same `WHERE`
+condition to confirm you are targeting the correct rows:
+```sql
+-- Check first
+SELECT * FROM customers WHERE id = 2;
+
+-- Then update
+UPDATE customers
+    SET score = 0
+WHERE id = 2;
+```
+
+This ensures you are not accidentally updating the wrong rows.
+
+---
+
+### Update a Single Column
+**File:** `update_data.sql`
+
+**Task:** Change the score of customer with id 2 to 0.
+```sql
+UPDATE customers
+    SET score = 0
+WHERE id = 2;
+```
+
+**Before:**
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 2  | John       | USA     | 900   |
+
+**After:**
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 2  | John       | USA     | 0     |
+
+Only the row where `id = 2` is affected. All other rows remain unchanged.
+
+---
+
+### Update Multiple Columns at Once
+**File:** `update_data.sql`
+
+**Task:** Change the score of customer with id 3 to 250 and update the country to Japan.
+```sql
+UPDATE customers
+    SET score = 250,
+        country = 'Japan'
+WHERE id = 3;
+```
+
+**Before:**
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 3  | Georg      | UK      | 750   |
+
+**After:**
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 3  | Georg      | Japan   | 250   |
+
+Multiple columns are updated in one statement by separating each
+assignment with a comma inside `SET`.
+
+---
+
+### Update Multiple Rows at Once
+**File:** `update_data.sql`
+
+**Task:** Update the country to Japan for all customers who are not already in Japan.
+```sql
+UPDATE customers
+    SET country = 'Japan'
+WHERE country != 'Japan';
+```
+
+**Before:**
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 1  | Maria      | Germany | 350   |
+| 2  | John       | USA     | 0     |
+| 3  | Georg      | Japan   | 250   |
+| 4  | Martin     | Germany | 500   |
+| 5  | Peter      | USA     | 0     |
+
+**After:**
+| id | first_name | country | score |
+|----|------------|---------|-------|
+| 1  | Maria      | Japan   | 350   |
+| 2  | John       | Japan   | 0     |
+| 3  | Georg      | Japan   | 250   |
+| 4  | Martin     | Japan   | 500   |
+| 5  | Peter      | Japan   | 0     |
+
+This is how you efficiently update hundreds of thousands of rows at once
+using a condition — instead of updating each row individually.
+
+---
+
+### Key Takeaway
+
+| Scenario | Approach |
+|----------|----------|
+| Update one row | `WHERE id = n` |
+| Update multiple columns | Separate with comma inside `SET` |
+| Update multiple rows | Use a condition that matches all target rows |
+| Update all rows | Omit `WHERE` — but almost never do this intentionally |
+```sql
+UPDATE table_name
+    SET col1 = val1,
+        col2 = val2
+WHERE condition;
+```
+
+Always `SELECT` before you `UPDATE` to confirm the right rows are targeted.
